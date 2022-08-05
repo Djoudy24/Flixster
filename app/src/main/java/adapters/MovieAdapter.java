@@ -1,6 +1,7 @@
 package adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.List;
 
 import models.Movie;
 
-public abstract class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.ViewHolder> {
 
     Context context;
     List<Movie> movies;
@@ -63,7 +64,16 @@ public abstract class MovieAdapter extends RecyclerView.Adapter <MovieAdapter.Vi
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverview.setText(movie.getOverview());
-            Glide.with(context).load(movie.getPosterPath()).into(ivPoster);
+            String imageUrl;
+
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+                imageUrl = movie.getBackdropPath();
+            } else {
+
+                imageUrl = movie.getPosterPath();
+            }
+            Glide.with(context).load(imageUrl).into(ivPoster);
         }
     }
 }
